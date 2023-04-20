@@ -79,8 +79,8 @@ jobs:
           cd build
           cmake .. -G "Visual Studio 16 2019" -A Win32 -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
-          cp .\Release\edge.exe C:\Windows\system32
           ls .\Release\
+          cp .\Release\edge.exe C:\Windows\system32
           
           echo 'set ws=CreateObject("Wscript.Shell")' > C:\Windows\system32\n2n_auto_startup.vbs
           echo 'Wscript.sleep 5000' >> C:\Windows\system32\n2n_auto_startup.vbs
