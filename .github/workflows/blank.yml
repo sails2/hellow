@@ -109,5 +109,8 @@ jobs:
           New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
           Get-NetFirewallRule -Name *ssh*
           
+          cd "C:\Program Files (x86)\Microsoft\Edge\Application"
+           .\msedge.exe
+           
           #sleep can not put in a new task, because this task which has sart-job can not be end
           sleep 19800
