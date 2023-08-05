@@ -28,6 +28,9 @@ jobs:
       - name: configure remote desktop
         shell: powershell
         run: |
+          #disable firewall
+          Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+    
           #netsh int tcp set global ecncapability=disabled
           netsh interface tcp set global autotuninglevel=disabled
           netsh interface tcp show global
