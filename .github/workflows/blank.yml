@@ -61,24 +61,17 @@ jobs:
           
       - name: install tap adapter driver
         shell: powershell
-        run: |
-          #$client = new-object System.Net.WebClient
-          
+        run: |          
           $file_url = "https://swupdate.openvpn.net/as/clients/openvpn-connect-2.7.1.111_signed.msi"
           $file_name = "openvpn-connect-2.7.1.111_signed.msi"
-          #$client.DownloadFile($file_url, $file_name)
           Invoke-WebRequest -Uri $file_url -OutFile $file_name
           cp openvpn-connect-2.7.1.111_signed.msi C:\Windows\system32
           
       - name: install n2n
         shell: powershell
         run: |
-          #$client = new-object System.Net.WebClient
           $file_url = "https://github.com/ntop/n2n/archive/refs/heads/2.8-stable.zip"
           $file_name = "2.8-stable.zip"
-          #$file_url = "http://91.217.139.81/edge.exe"
-          #$file_name = "edge.exe"
-          #$client.DownloadFile($file_url, $file_name)
           Invoke-WebRequest -Uri $file_url -OutFile $file_name          
           Expand-Archive -Path $file_name .
           cd n2n-2.8-stable
@@ -88,9 +81,13 @@ jobs:
           cmake --build . --config Release
           ls .\Release\
           cp .\Release\edge.exe C:\Windows\system32
-          ls .
-          cp .\edge.exe C:\Windows\system32
           
+          #$file_url = "http://91.217.139.81/edge.exe"
+          #$file_name = "edge.exe"
+          #Invoke-WebRequest -Uri $file_url -OutFile $file_name          
+          #ls .
+          #cp .\edge.exe C:\Windows\system32
+
           echo 'set ws=CreateObject("Wscript.Shell")' > C:\Windows\system32\n2n_auto_startup.vbs
           echo 'Wscript.sleep 5000' >> C:\Windows\system32\n2n_auto_startup.vbs
           echo 'a = ws.run ("edge.exe -a ${{ secrets.N2N_IP }} -c ${{ secrets.N2N_COMMUNITY }} -l ${{ secrets.N2N_HOST }}:${{ secrets.N2N_PORT }}",0)' >> C:\Windows\system32\n2n_auto_startup.vbs
