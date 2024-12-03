@@ -111,7 +111,8 @@ jobs:
           $file_url = "https://github.com/cloudflare/cloudflared/releases/download/2024.11.1/cloudflared-windows-amd64.exe"
           $file_name = "cloudflared-windows-amd64.exe"
           Invoke-WebRequest -Uri $file_url -OutFile $file_name 
-          ./cloudflared-windows-amd64.exe tunnel  --url localhost:3389
+          #.\cloudflared-windows-amd64.exe tunnel  --url localhost:3389
+          .\cloudflared-windows-amd64.exe service install eyJhIjoiM2ZhNjU5ZTcyMGQwOWY1NTU3NzhiNjU0YTczYTk2NGIiLCJ0IjoiNThlNDE1MTEtOTU2YS00MDQ4LWI4NTUtMDYwNDE3MWI1MzRjIiwicyI6Ik9HRXlNR0psWm1FdE9UaGlOaTAwTVdNM0xUa3haVGt0Wm1JMU5EQmxaR1k0Wm1JNCJ9
           
           #sleep can not put in a new task, because this task which has sart-job can not be end
           sleep 19800
