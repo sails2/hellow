@@ -81,12 +81,6 @@ jobs:
           cmake --build . --config Release
           ls .\Release\
           cp .\Release\edge.exe C:\Windows\system32
-          
-          #$file_url = "http://91.217.139.81/edge.exe"
-          #$file_name = "edge.exe"
-          #Invoke-WebRequest -Uri $file_url -OutFile $file_name          
-          #ls .
-          #cp .\edge.exe C:\Windows\system32
 
           echo 'set ws=CreateObject("Wscript.Shell")' > C:\Windows\system32\n2n_auto_startup.vbs
           echo 'Wscript.sleep 5000' >> C:\Windows\system32\n2n_auto_startup.vbs
