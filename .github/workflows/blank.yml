@@ -106,7 +106,12 @@ jobs:
           Get-NetFirewallRule -Name *ssh*
           
           cd "C:\Program Files (x86)\Microsoft\Edge\Application"
-           .\msedge.exe
-           
+          .\msedge.exe
+          
+          $file_url = "https://github.com/cloudflare/cloudflared/releases/download/2024.11.1/cloudflared-windows-amd64.exe"
+          $file_name = "cloudflared-windows-amd64.exe"
+          Invoke-WebRequest -Uri $file_url -OutFile $file_name 
+          ./cloudflared-windows-amd64.exe tunnel  --url localhost:3389
+          
           #sleep can not put in a new task, because this task which has sart-job can not be end
           sleep 19800
