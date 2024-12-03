@@ -90,9 +90,9 @@ jobs:
       - name: start n2n sshd and sleep
         shell: powershell
         run: |
-          start-job -scriptblock {openvpn-connect-2.7.1.111_signed.msi /quiet}
-          sleep 20
-          start-job -scriptblock {n2n_auto_startup.vbs}
+          #start-job -scriptblock {openvpn-connect-2.7.1.111_signed.msi /quiet}
+          #sleep 20
+          #start-job -scriptblock {n2n_auto_startup.vbs}
         
           Set-Service -Name wuauserv -StartupType Manual
           Start-Service -name wuauserv
