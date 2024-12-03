@@ -52,6 +52,7 @@ jobs:
           
           taskkill /im explorer.exe /f
           start "C:\WINDOWS\explorer.exe"
+          
       - name: start remote desktop
         shell: powershell
         run: |
@@ -59,7 +60,7 @@ jobs:
           Get-NetFirewallRule -Name RemoteDesktop* | select DisplayName,Direction,Enabled 
           Get-NetFirewallRule -Name RemoteDesktop* | Set-NetFirewallRule -Enabled true
 
-      - name: start remote sshd and sleep
+      - name: start sshd and sleep
         shell: powershell
         run: |      
           Set-Service -Name wuauserv -StartupType Manual
