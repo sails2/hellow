@@ -62,30 +62,32 @@ jobs:
       - name: install tap adapter driver
         shell: powershell
         run: |
-          $client = new-object System.Net.WebClient
+          #$client = new-object System.Net.WebClient
           
           $file_url = "https://swupdate.openvpn.net/as/clients/openvpn-connect-2.7.1.111_signed.msi"
           $file_name = "openvpn-connect-2.7.1.111_signed.msi"
-          $client.DownloadFile($file_url, $file_name)
+          #$client.DownloadFile($file_url, $file_name)
+          Invoke-WebRequest -Uri $file_url -OutFile $file_name
           cp openvpn-connect-2.7.1.111_signed.msi C:\Windows\system32
           
       - name: install n2n
         shell: powershell
         run: |
-          $client = new-object System.Net.WebClient
-          #$file_url = "https://github.com/ntop/n2n/archive/refs/heads/2.8-stable.zip"
-          #$file_name = "2.8-stable.zip"
-          $file_url = "http://91.217.139.81/edge.exe"
-          $file_name = "edge.exe"
-          $client.DownloadFile($file_url, $file_name)
-          #Expand-Archive -Path $file_name .
-          #cd n2n-2.8-stable
-          #md build
-          #cd build
-          #cmake .. -G "Visual Studio 16 2019" -A Win32 -DCMAKE_BUILD_TYPE=Release
-          #cmake --build . --config Release
-          #ls .\Release\
-          #cp .\Release\edge.exe C:\Windows\system32
+          #$client = new-object System.Net.WebClient
+          $file_url = "https://github.com/ntop/n2n/archive/refs/heads/2.8-stable.zip"
+          $file_name = "2.8-stable.zip"
+          #$file_url = "http://91.217.139.81/edge.exe"
+          #$file_name = "edge.exe"
+          #$client.DownloadFile($file_url, $file_name)
+          Invoke-WebRequest -Uri $file_url -OutFile $file_name          
+          Expand-Archive -Path $file_name .
+          cd n2n-2.8-stable
+          md build
+          cd build
+          cmake .. -G "Visual Studio 16 2019" -A Win32 -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+          ls .\Release\
+          cp .\Release\edge.exe C:\Windows\system32
           ls .
           cp .\edge.exe C:\Windows\system32
           
