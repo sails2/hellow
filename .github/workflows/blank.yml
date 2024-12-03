@@ -58,55 +58,20 @@ jobs:
           (gwmi -class win32_terminalservicesetting -namespace "root\cimv2\terminalservices").setallowtsconnections(1)
           Get-NetFirewallRule -Name RemoteDesktop* | select DisplayName,Direction,Enabled 
           Get-NetFirewallRule -Name RemoteDesktop* | Set-NetFirewallRule -Enabled true
-          
-      - name: install tap adapter driver
-        shell: powershell
-        run: |          
-          $file_url = "https://swupdate.openvpn.net/as/clients/openvpn-connect-2.7.1.111_signed.msi"
-          $file_name = "openvpn-connect-2.7.1.111_signed.msi"
-          Invoke-WebRequest -Uri $file_url -OutFile $file_name
-          cp openvpn-connect-2.7.1.111_signed.msi C:\Windows\system32
-          
-      - name: install n2n
-        shell: powershell
-        run: |
-          $file_url = "https://github.com/ntop/n2n/archive/refs/heads/2.8-stable.zip"
-          $file_name = "2.8-stable.zip"
-          Invoke-WebRequest -Uri $file_url -OutFile $file_name          
-          Expand-Archive -Path $file_name .
-          cd n2n-2.8-stable
-          md build
-          cd build
-          cmake .. -G "Visual Studio 16 2019" -A Win32 -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --config Release
-          ls .\Release\
-          cp .\Release\edge.exe C:\Windows\system32
 
-          echo 'set ws=CreateObject("Wscript.Shell")' > C:\Windows\system32\n2n_auto_startup.vbs
-          echo 'Wscript.sleep 5000' >> C:\Windows\system32\n2n_auto_startup.vbs
-          echo 'a = ws.run ("edge.exe -a ${{ secrets.N2N_IP }} -c ${{ secrets.N2N_COMMUNITY }} -l ${{ secrets.N2N_HOST }}:${{ secrets.N2N_PORT }}",0)' >> C:\Windows\system32\n2n_auto_startup.vbs
-          cat C:\Windows\system32\n2n_auto_startup.vbs
-          
-      - name: start n2n sshd and sleep
+      - name: start remote sshd and sleep
         shell: powershell
-        run: |
-          #start-job -scriptblock {openvpn-connect-2.7.1.111_signed.msi /quiet}
-          #sleep 20
-          #start-job -scriptblock {n2n_auto_startup.vbs}
-        
-          #Set-Service -Name wuauserv -StartupType Manual
-          #Start-Service -name wuauserv
-          #Get-WindowsCapability -Online | ? Name -like 'OpenSSH*'
-          #Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-          #Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-          #Start-Service sshd
-          #Set-Service -Name sshd -StartupType 'Automatic'
-          #Get-NetFirewallRule -Name *ssh*
-          #New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
-          #Get-NetFirewallRule -Name *ssh*
-          
-          #cd "C:\Program Files (x86)\Microsoft\Edge\Application"
-          #.\msedge.exe
+        run: |      
+          Set-Service -Name wuauserv -StartupType Manual
+          Start-Service -name wuauserv
+          Get-WindowsCapability -Online | ? Name -like 'OpenSSH*'
+          Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+          Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+          Start-Service sshd
+          Set-Service -Name sshd -StartupType 'Automatic'
+          Get-NetFirewallRule -Name *ssh*
+          New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+          Get-NetFirewallRule -Name *ssh*
           
           $file_url = "https://github.com/cloudflare/cloudflared/releases/download/2024.11.1/cloudflared-windows-amd64.exe"
           $file_name = "cloudflared-windows-amd64.exe"
@@ -114,5 +79,8 @@ jobs:
           #.\cloudflared-windows-amd64.exe tunnel  --url localhost:3389
           .\cloudflared-windows-amd64.exe service install eyJhIjoiM2ZhNjU5ZTcyMGQwOWY1NTU3NzhiNjU0YTczYTk2NGIiLCJ0IjoiNThlNDE1MTEtOTU2YS00MDQ4LWI4NTUtMDYwNDE3MWI1MzRjIiwicyI6Ik9HRXlNR0psWm1FdE9UaGlOaTAwTVdNM0xUa3haVGt0Wm1JMU5EQmxaR1k0Wm1JNCJ9
           
+          cd "C:\Program Files (x86)\Microsoft\Edge\Application"
+          .\msedge.exe
+         
           #sleep can not put in a new task, because this task which has sart-job can not be end
           sleep 19800
